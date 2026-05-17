@@ -3,6 +3,8 @@ import sys
 import types
 import unittest
 from pathlib import Path
+from pydantic import BaseModel, Field, ConfigDict, ValidationError
+from typing import Optional, Literal, Any
 
 # Add both src directory and project root to path
 SRC_ROOT = Path(__file__).resolve().parents[1] / "src"
@@ -35,10 +37,6 @@ class FastAPI:
 def query(default, **kwargs):
     return default
 
-
-# Import real pydantic to use its actual classes for mocking
-from pydantic import BaseModel, Field, ConfigDict, ValidationError
-from typing import Optional, Literal, Any
 
 fastapi_module = types.ModuleType("fastapi")
 fastapi_module.FastAPI = FastAPI
