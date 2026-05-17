@@ -97,10 +97,14 @@ async def main():
     # Connect to Redis
     redis_client = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, decode_responses=True)
     await ensure_consumer_group(redis_client)
+    LOGGER.info("event=redis_connected host=%s port=%s", REDIS_HOST, REDIS_PORT)
 
     # Connect to PostgreSQL
     db_pool = await asyncpg.create_pool(
         user=PG_USER, password=PG_PASS, database=PG_DB, host=PG_HOST, port=5432
+    )
+    LOGGER.info(
+        "event=postgres_connected host=%s port=%s database=%s", PG_HOST, 5432, PG_DB
     )
 
     # Local LLMs can be slow, but each request still needs an upper bound.
