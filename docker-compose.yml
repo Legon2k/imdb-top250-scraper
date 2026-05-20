@@ -129,8 +129,8 @@ services:
   worker_ai:
     container_name: imdb_ai_worker
     build: 
-      context: ./src/worker_ai_python
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: src/worker_ai_python/Dockerfile
     restart: unless-stopped
     env_file:
       - .env

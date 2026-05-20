@@ -38,7 +38,6 @@ jobs:
           uv sync --project src/scraper_python
 
       # Handle traditional legacy dependencies for API and contract testing
-# Handle traditional legacy dependencies for API and contract testing
       - name: Install legacy and test dependencies
         run: |
           uv pip install --python src/scraper_python/.venv -r requirements-test.txt
@@ -61,6 +60,17 @@ jobs:
 
       - name: Contract sync tests
         run: src/scraper_python/.venv/bin/pytest contracts/test_contracts.py -v --tb=short
+
+      # Install and test worker_ai_python dependencies
+      - name: Install AI worker dependencies
+        run: |
+          uv sync --project src/worker_ai_python
+
+      - name: AI worker lint
+        run: uv run --project src/worker_ai_python ruff check .
+
+      - name: AI worker format check
+        run: uv run --project src/worker_ai_python ruff format --check .
 
   dotnet-checks:
     name: .NET 10 Build Check

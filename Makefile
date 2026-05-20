@@ -1,23 +1,24 @@
 .PHONY: install install-dev install-browser test test-contracts test-all lint format scrape docker-build docker-run compose-run
 
 install:
-	python -m pip install -r src/scraper_python/requirements.txt
+	uv sync --project src/scraper_python
+	uv sync --project src/worker_ai_python
 
 install-dev:
-	python -m pip install -r src/scraper_python/requirements-dev.txt
+	uv sync --project src/scraper_python
 
 install-browser:
 	python -m playwright install chromium
 
 install-test:
-	python -m pip install -r requirements-test.txt
+	uv pip install -r requirements-test.txt
 
 test:
-	python -B -m unittest discover -s src/scraper_python/tests -t src/scraper_python
-	python -B -m unittest discover -s src/api_fastapi/tests
+	uv run --project src/scraper_python python -B -m unittest discover -s src/scraper_python/tests -t src/scraper_python
+	uv run --project src/scraper_python python -B -m unittest discover -s src/api_fastapi/tests
 
 test-contracts:
-	python -m pytest contracts/test_contracts.py -v --tb=short
+	uv run --project src/scraper_python python -m pytest contracts/test_contracts.py -v --tb=short
 
 test-all: test test-contracts
 
@@ -25,13 +26,15 @@ test-docker:
 	docker compose --profile test up contract-tests
 
 lint:
-	ruff check .
+	uv run --project src/scraper_python ruff check .
+	uv run --project src/worker_ai_python ruff check .
 
 format:
-	ruff format .
+	uv run --project src/scraper_python ruff format .
+	uv run --project src/worker_ai_python ruff format .
 
 scrape:
-	python -B src/scraper_python/src/imdb_top.py
+	uv run --project src/scraper_python python -B src/scraper_python/src/imdb_top.py
 
 docker-build:
 	docker build -t imdb-top250-scraper src/scraper_python
