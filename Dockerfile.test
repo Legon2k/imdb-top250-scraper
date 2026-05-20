@@ -5,12 +5,14 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
+# Install uv
+RUN pip install --no-cache-dir uv
+
 # Copy contract definitions and tests
 COPY contracts/ /app/contracts/
-COPY requirements-test.txt /app/requirements-test.txt
 
-# Install dependencies
-RUN pip install --no-cache-dir -r requirements-test.txt
+# Install test dependencies using uv
+RUN uv sync --project /app/contracts
 
 # Run tests with exit code
-CMD ["python", "-m", "pytest", "contracts/test_contracts.py", "-v", "--tb=short"]
+CMD ["uv", "run", "--project", "contracts", "pytest", "contracts/test_contracts.py", "-v", "--tb=short"]

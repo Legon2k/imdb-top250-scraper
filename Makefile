@@ -14,14 +14,14 @@ install-browser:
 	python -m playwright install chromium
 
 install-test:
-	uv pip install -r requirements-test.txt
+	uv sync --project contracts
 
 test:
 	uv run --project src/scraper_python python -B -m unittest discover -s src/scraper_python/tests -t src/scraper_python
 	uv run --project src/scraper_python python -B -m unittest discover -s src/api_fastapi/tests
 
 test-contracts:
-	uv run --project src/scraper_python python -m pytest contracts/test_contracts.py -v --tb=short
+	uv run --project contracts pytest contracts/test_contracts.py -v --tb=short
 
 test-all: test test-contracts
 

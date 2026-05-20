@@ -38,10 +38,9 @@ jobs:
           uv sync --project src/scraper_python
 
       # Handle traditional legacy dependencies for API and contract testing
-      - name: Install legacy and test dependencies
+      - name: Install test dependencies
         run: |
-          uv pip install --python src/scraper_python/.venv -r requirements-test.txt
-          uv pip install --python src/scraper_python/.venv jsonschema pytest
+          uv sync --project contracts
 
       # Lint check using uv execution context inside the scraper folder
       - name: Ruff lint
@@ -56,10 +55,10 @@ jobs:
         run: uv run --project src/scraper_python python -m unittest discover -s src/scraper_python/tests -t src/scraper_python
 
       - name: API smoke tests
-        run: src/scraper_python/.venv/bin/python -m unittest discover -s src/api_fastapi/tests
+        run: uv run --project src/scraper_python python -m unittest discover -s src/api_fastapi/tests
 
       - name: Contract sync tests
-        run: src/scraper_python/.venv/bin/pytest contracts/test_contracts.py -v --tb=short
+        run: uv run --project contracts pytest contracts/test_contracts.py -v --tb=short
 
       # Install and test worker_ai_python dependencies
       - name: Install AI worker dependencies
