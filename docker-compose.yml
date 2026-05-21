@@ -149,7 +149,7 @@ services:
     container_name: imdb_contract_tests
     build:
       context: .
-      dockerfile: Dockerfile.test
+      dockerfile: src/contracts/Dockerfile.test
     env_file:
       - .env
     networks:
