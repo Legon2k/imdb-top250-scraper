@@ -8,11 +8,13 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /app
 
 # Install dependencies first to leverage Docker layer caching
-COPY requirements.txt .
+COPY src/api_fastapi/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the application source code
-COPY ./src ./src
+COPY src/api_fastapi/src ./src
+
+# Copy contracts directory
+COPY src/contracts ./src/contracts
 
 # Expose port 8000 for the FastAPI server
 EXPOSE 8000

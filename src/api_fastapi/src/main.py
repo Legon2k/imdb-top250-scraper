@@ -12,8 +12,7 @@ from fastapi import FastAPI, HTTPException, Query
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
-# Add parent directory to path to import shared contracts
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../../"))
+sys.path.insert(0, os.path.dirname(__file__))
 from contracts import DatabaseMovie
 
 # Global variables to hold our connections

@@ -96,8 +96,8 @@ services:
   api:
     container_name: imdb_api
     build: 
-      context: ./src/api_fastapi
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: src/api_fastapi/Dockerfile
     restart: unless-stopped
     env_file:
       - .env
