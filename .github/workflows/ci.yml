@@ -37,6 +37,11 @@ jobs:
         run: |
           uv sync --project src/scraper_python
 
+      # Synchronize API FastAPI environment
+      - name: Install API dependencies
+        run: |
+          uv sync --project src/api_fastapi
+
       # Handle test dependencies for contracts
       - name: Install test dependencies
         run: |
@@ -54,8 +59,14 @@ jobs:
       - name: Scraper unit tests
         run: uv run --project src/scraper_python python -m unittest discover -s src/scraper_python/tests -t src/scraper_python
 
+      - name: API linting
+        run: uv run --project src/api_fastapi ruff check .
+
+      - name: API format check
+        run: uv run --project src/api_fastapi ruff format --check .
+
       - name: API smoke tests
-        run: uv run --project src/scraper_python python -m unittest discover -s src/api_fastapi/tests
+        run: uv run --project src/api_fastapi python -m unittest discover -s src/api_fastapi/tests
 
       - name: Contract sync tests
         run: uv run --project src/contracts pytest src/contracts/test_contracts.py -v --tb=short
@@ -70,6 +81,9 @@ jobs:
 
       - name: AI worker format check
         run: uv run --project src/worker_ai_python ruff format --check .
+
+      - name: Contract tests
+        run: uv run --project src/contracts pytest src/contracts/test_contracts.py -v --tb=short
 
   dotnet-checks:
     name: .NET 10 Build Check

@@ -3,7 +3,7 @@ import json
 import os
 import sys
 from contextlib import asynccontextmanager
-from typing import List, Dict, Any
+from typing import Any
 
 import asyncpg
 import pandas as pd
@@ -43,7 +43,7 @@ class EnrichmentResponse(BaseModel):
 
 class RecoverResponse(BaseModel):
     message: str
-    recovered_movies: List[Dict[str, Any]]
+    recovered_movies: list[dict[str, Any]]
 
 
 class HealthResponse(BaseModel):
@@ -88,7 +88,10 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="IMDB AI Pipeline API",
-    description="API Gateway for accessing processed IMDB movie data, triggering AI tasks, and self-healing.",
+    description=(
+        "API Gateway for accessing processed IMDB movie data, "
+        "triggering AI tasks, and self-healing."
+    ),
     version="3.0.0",
     lifespan=lifespan,
 )
@@ -138,7 +141,7 @@ async def readiness_check():
     "/movies",
     summary="Get all movies",
     tags=["Movies"],
-    response_model=List[MovieResponse],
+    response_model=list[MovieResponse],
 )
 async def get_movies(limit: int = 50, offset: int = 0):
     """
@@ -271,9 +274,8 @@ async def enrich_movies(limit: int = Query(default=5, ge=1, le=250)):
         WHERE m.id = selected.id
         RETURNING m.id, m.rank, m.title, m.rating;
     """
-    async with db_pool.acquire() as connection:
-        async with connection.transaction():
-            pending_movies = await connection.fetch(lock_query, limit)
+    async with db_pool.acquire() as connection, connection.transaction():
+        pending_movies = await connection.fetch(lock_query, limit)
 
     if not pending_movies:
         return {"message": "No pending movies found to enrich.", "queued_tasks": 0}

@@ -6,6 +6,7 @@ SHELL := pwsh.exe
 install:
 	uv sync --project src/scraper_python
 	uv sync --project src/worker_ai_python
+	uv sync --project src/api_fastapi
 
 install-dev:
 	uv sync --project src/scraper_python
@@ -31,10 +32,12 @@ test-docker:
 lint:
 	$$env:VIRTUAL_ENV = $$null; uv run --project src/scraper_python ruff check .
 	$$env:VIRTUAL_ENV = $$null; uv run --project src/worker_ai_python ruff check .
+	$$env:VIRTUAL_ENV = $$null; uv run --project src/api_fastapi ruff check .
 
 format:
 	$$env:VIRTUAL_ENV = $$null; uv run --project src/scraper_python ruff format .
 	$$env:VIRTUAL_ENV = $$null; uv run --project src/worker_ai_python ruff format .
+	$$env:VIRTUAL_ENV = $$null; uv run --project src/api_fastapi ruff format .
 
 scrape:
 	uv run --project src/scraper_python python -B src/scraper_python/src/imdb_top.py

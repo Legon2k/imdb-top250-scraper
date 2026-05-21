@@ -3,8 +3,9 @@ import sys
 import types
 import unittest
 from pathlib import Path
-from pydantic import BaseModel, Field, ConfigDict, ValidationError
-from typing import Optional, Literal, Any
+from typing import Any, Literal, Optional
+
+from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 # Add both src directory and project root to path
 SRC_ROOT = Path(__file__).resolve().parents[1] / "src"
