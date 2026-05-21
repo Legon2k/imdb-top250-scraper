@@ -10,8 +10,8 @@ import redis.asyncio as redis
 from pydantic import ValidationError
 from redis.exceptions import ResponseError
 
-# Add parent directory to path to import shared contracts
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../../"))
+# Add src directory to path to import shared contracts
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../"))
 from contracts import AITaskPayload
 
 # System configurations

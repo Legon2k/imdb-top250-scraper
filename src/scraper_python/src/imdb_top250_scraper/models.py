@@ -10,7 +10,7 @@ import sys
 from typing import NotRequired, TypedDict
 
 # Import shared contract
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../../.."))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../../"))
 from contracts import MoviePayload as SharedMoviePayload
 
 # Re-export the shared contract for convenience

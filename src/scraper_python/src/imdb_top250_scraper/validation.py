@@ -7,6 +7,7 @@ Validates that movies conform to the shared MoviePayload contract.
 import os
 import sys
 
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../../"))
 from contracts import MoviePayload
 
 sys.path.insert(0, os.path.dirname(__file__))

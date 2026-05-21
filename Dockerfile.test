@@ -9,10 +9,10 @@ WORKDIR /app
 RUN pip install --no-cache-dir uv
 
 # Copy contract definitions and tests
-COPY contracts/ /app/contracts/
+COPY src/contracts /app/src/contracts/
 
 # Install test dependencies using uv
-RUN uv sync --project /app/contracts
+RUN uv sync --project /app/src/contracts
 
 # Run tests with exit code
-CMD ["uv", "run", "--project", "contracts", "pytest", "contracts/test_contracts.py", "-v", "--tb=short"]
+CMD ["uv", "run", "--project", "src/contracts", "pytest", "src/contracts/test_contracts.py", "-v", "--tb=short"]
